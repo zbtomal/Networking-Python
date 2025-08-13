@@ -46,37 +46,37 @@ def byte_unstuffing(data, flag="F", esc="E"):
     # Remove start and end flags
     data = data[1:-1]
     unstuffed = ""
-    skip = False
-    for i, byte in enumerate(data):
-        if skip:
-            skip = False
-            continue
-        if byte == esc:
-            skip = False
-            continue
-        unstuffed += byte
+    i = 0
+    while i < len(data):
+        if data[i] == esc:
+            i += 1  # Skip the escape character and take the next byte as is
+            if i < len(data):
+                unstuffed += data[i]
+        else:
+            unstuffed += data[i]
+        i += 1
     return unstuffed
 
 
 # --------------------- DEMO ---------------------
-if __name__ == "__main__":
+
     # Example binary data
-    binary_data = "01111110111110111110"
-    print("Original Binary Data: ", binary_data)
+binary_data = "01111110111110111110"
+print("Original Binary Data: ", binary_data)
 
-    # --- Bit Stuffing ---
-    stuffed_bits = bit_stuffing(binary_data)
-    print("Bit Stuffed Data:     ", stuffed_bits)
-    unstuffed_bits = bit_unstuffing(stuffed_bits)
-    print("Bit Unstuffed Data:   ", unstuffed_bits)
+# --- Bit Stuffing ---
+stuffed_bits = bit_stuffing(binary_data)
+print("Bit Stuffed Data:     ", stuffed_bits)
+unstuffed_bits = bit_unstuffing(stuffed_bits)
+print("Bit Unstuffed Data:   ", unstuffed_bits)
 
-    print("\n--- BYTE STUFFING ---")
-    # Example byte stream (characters)
-    byte_stream = "ABFECDEFG"
-    print("Original Byte Data:   ", byte_stream)
+print("\n--- BYTE STUFFING ---")
+# Example byte stream (characters)
+byte_stream = "ABFECDEFG"
+print("Original Byte Data:   ", byte_stream)
 
-    stuffed_bytes = byte_stuffing(byte_stream, flag="F", esc="E")
-    print("Byte Stuffed Data:    ", stuffed_bytes)
+stuffed_bytes = byte_stuffing(byte_stream, flag="F", esc="E")
+print("Byte Stuffed Data:    ", stuffed_bytes)
 
-    unstuffed_bytes = byte_unstuffing(stuffed_bytes, flag="F", esc="E")
-    print("Byte Unstuffed Data:  ", unstuffed_bytes)
+unstuffed_bytes = byte_unstuffing(stuffed_bytes, flag="F", esc="E")
+print("Byte Unstuffed Data:  ", unstuffed_bytes)

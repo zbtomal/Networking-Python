@@ -8,15 +8,13 @@ clients = []
 def handle_client(conn):
     addr = conn.getpeername()
     while True:
-        try:
             data = conn.recv(1024)
             if not data:
                 break
             # Prepend sender's port to the message
             message = f"[Port {addr[1]}] {data.decode()}".encode()
             broadcast(message, conn)
-        except:
-            break
+        
     clients.remove(conn)
     conn.close()
 
