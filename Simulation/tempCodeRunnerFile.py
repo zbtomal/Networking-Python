@@ -1,0 +1,1 @@
+ack_lost = random.random() < 0.2
